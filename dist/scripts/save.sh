@@ -12,6 +12,11 @@ remote_object="s3://${BUCKET}/${OBJECT_KEY}"
 hash=$(echo -n "$OBJECT_KEY" | sha1sum | cut -f1 -d" ")
 temp_file="$RUNNER_TEMP/$hash"
 
+# If windows, convert to unix-style path
+if [[ "$(uname -s)" == MINGW* ]]; then
+    temp_file="$(cygpath -u "$temp_file")"
+fi
+
 function cleanup {
     rm -f "$temp_file"
 }
