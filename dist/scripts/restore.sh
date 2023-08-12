@@ -28,7 +28,7 @@ if aws s3api head-object --bucket="$BUCKET" --key="$OBJECT_KEY"; then
     trap cleanup EXIT
     
     echo "Downloading and decompressing..."
-    time aws s3 cp "s3://${BUCKET}/${OBJECT_KEY}" - | zstd -d - -o "$temp_file"
+    time aws s3 cp "s3://${BUCKET}/${OBJECT_KEY}" - | zstd --no-progress -d - -o "$temp_file"
 
     echo "Extracting tar archive..."
     time tar -C "$LOCAL_PATH" -xf "$temp_file"
