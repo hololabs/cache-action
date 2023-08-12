@@ -3,8 +3,7 @@
 : "${BUCKET:?BUCKET env var missing}"
 : "${LOCAL_PATH:?LOCAL_PATH env var missing}"
 
-ZSTD_CLEVEL="${ZSTD_CLEVEL:--4}"
-ZSTD_NBTHREADS="${ZSTD_NBTHREADS:-4}"
+export ZSTD_NBTHREADS="${ZSTD_NBTHREADS:-4}"
 AWS_MAX_CONCURRENT_REQUESTS="${AWS_MAX_CONCURRENT_REQUESTS:-30}"
 
 aws configure set default.s3.max_concurrent_requests "$AWS_MAX_CONCURRENT_REQUESTS"
