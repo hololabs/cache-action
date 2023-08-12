@@ -31,4 +31,4 @@ echo "Creating zstd compressed tar archive..."
 time tar -C "$LOCAL_PATH" --zstd -cf "$temp_file" . 
 
 echo "Uploading archive..."
-time aws s3 cp "$temp_file" "$remote_object"
+time aws s3 cp "$temp_file" "$remote_object" --no-progress
