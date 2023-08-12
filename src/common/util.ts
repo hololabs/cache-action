@@ -1,3 +1,4 @@
+import * as os from 'os'
 import * as path from 'path'
 import {Inputs} from './inputs'
 
@@ -24,5 +25,6 @@ export function makeEnv(inputs: Inputs, key: string): {[key: string]: string} {
   if (inputs.CompressionThreads !== '') {
     env.ZSTD_NBTHREADS = inputs.CompressionThreads
   }
+  env.RUNNER_TEMP = process.env.RUNNER_TEMP || os.tmpdir()
   return env
 }

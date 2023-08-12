@@ -90,6 +90,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.makeEnv = void 0;
+const os = __importStar(__nccwpck_require__(87));
 const path = __importStar(__nccwpck_require__(622));
 function processEnvObject() {
     const env = {};
@@ -108,6 +109,7 @@ function makeEnv(inputs, key) {
     if (inputs.CompressionThreads !== '') {
         env.ZSTD_NBTHREADS = inputs.CompressionThreads;
     }
+    env.RUNNER_TEMP = process.env.RUNNER_TEMP || os.tmpdir();
     return env;
 }
 exports.makeEnv = makeEnv;

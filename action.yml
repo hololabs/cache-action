@@ -5,11 +5,11 @@ inputs:
   should-restore:
     required: false
     description: If true, the action should attempt to restore data from the cache.  Default is true.
-    default: true
+    default: 'true'
   should-save:
     required: false
     description: If true, the action should attempt to save data back to the cache.  Default is true.
-    default: true
+    default: 'true'
   key:
     required: true
     description: The key used when writing data to the cache  
