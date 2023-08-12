@@ -28,7 +28,7 @@ mkdir -p "$LOCAL_PATH"
 trap cleanup EXIT
 
 echo "Creating compressed archive..."
-time tar -C "$LOCAL_PATH" --zstd -cf "$temp_file" "." 
+time tar -C "$LOCAL_PATH" --zstd -cf "$temp_file" "."
 
 echo "Uploading archive..."
 time aws s3 cp "$temp_file" "$remote_object" --no-progress
