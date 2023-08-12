@@ -22,19 +22,17 @@ function cleanup {
 
 aws configure set default.s3.max_concurrent_requests "$AWS_MAX_CONCURRENT_REQUESTS"
 
-if aws s3api head-object --bucket="$BUCKET" --key="$OBJECT_KEY"; then
-    mkdir -p "$LOCAL_PATH"
-
-    trap cleanup EXIT
-    
-    echo "Downloading and decompressing..."
-    time aws s3 cp "s3://${BUCKET}/${OBJECT_KEY}" - | zstd --no-progress -d - -o "$temp_file"
-
-    echo "Extracting tar archive..."
-    time tar -C "$LOCAL_PATH" -xf "$temp_file"
-    
-    exit 0
+if ! aws s3api head-object --bucket="$BUCKET" --key="$OBJECT_KEY"; then
+    # Special exit code to mean "not found"
+    exit 4
 fi
 
-# Special exit code to mean "not found"
-exit 4
+mkdir -p "$LOCAL_PATH"
+
+trap cleanup EXIT
+
+echo "Downloading and decompressing..."
+time aws s3 cp "s3://${BUCKET}/${OBJECT_KEY}" - | zstd --no-progress -d - -o "$temp_file"
+
+echo "Extracting tar archive..."
+time tar -C "$LOCAL_PATH" -xf "$temp_file"

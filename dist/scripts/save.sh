@@ -25,16 +25,10 @@ aws configure set default.s3.max_concurrent_requests "$AWS_MAX_CONCURRENT_REQUES
 
 mkdir -p "$LOCAL_PATH"
 
-# We'll use the uncompressed size of the folder as an upper bound on the size of the compressed tar archive.
-# We have to provide this upper bound to aws s3, so it knows how to break down the file into a reasonable
-# number of chunks (there cannot be more than 10k chunks).
-uncompressed_size="$(du -sb "$LOCAL_PATH" | awk '{print $1}')"
-echo "Cache item uncompressed size: $uncompressed_size"
-
 trap cleanup EXIT
 
 echo "Creating zstd compressed tar archive..."
-tar -C "$LOCAL_PATH" --zstd -cf "$temp_file" . 
+time tar -C "$LOCAL_PATH" --zstd -cf "$temp_file" . 
 
 echo "Uploading archive..."
-aws s3 cp --expected-size "$uncompressed_size" "$temp_file" "$remote_object"
+time aws s3 cp "$temp_file" "$remote_object"
